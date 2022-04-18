@@ -6,10 +6,16 @@
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
     "@testing-library/user-event": "^12.6.0",
+    "axios": "^0.26.1",
     "react": "^17.0.1",
+    "react-credit-card-input": "^1.1.5",
+    "react-credit-cards": "^0.8.3",
     "react-dom": "^17.0.1",
+    "react-native-credit-card": "^0.1.9",
+    "react-router-dom": "^6.3.0",
     "react-scripts": "4.0.1",
-    "styled-components": "^5.2.1",
+    "react-toastify": "^8.2.0",
+    "styled-components": "^5.3.5",
     "web-vitals": "^0.2.4"
   },
   "scripts": {

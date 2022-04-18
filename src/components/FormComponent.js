@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const move = keyframes`
 0%{
@@ -118,7 +122,7 @@ const Box2 = styled.div`
     props.clicked ? "23px 0 0 23px" : "0 23px 23px 0"};
 `;
 
-const Form = styled.form`
+const Form = styled.div`
   color: #1b1b1b;
   display: flex;
   flex-direction: column;
@@ -203,7 +207,7 @@ const ButtonAnimate = styled.button`
   background-color: transparent;
 
   &::before {
-    content: "😜";
+    content: "👞";
     font-size: 4rem;
   }
 
@@ -234,27 +238,78 @@ const Text = styled.div`
     font-size: 5rem;
   }
 `;
-
+const Header = () => {
+  return(
+      <div style={{fontWeight: "bold", fontSize: 50, color: "#1b1b1b", padding: 20, marginLeft: 50, fontFamily: "Zapfino"}}>
+        <p>Sebs Aio</p>
+      </div>
+  );
+}
 function FormComponent() {
+  const navigate = useNavigate();
   const [click, setClick] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("")
   const handleClick = () => setClick(!click);
+
+  const success = () => {
+    alert("Signed up successfully!");
+  };
+
+  const incorrect = () => {
+    alert("Unfortunately, failed to sign in!");
+  };
+
+  const signin = async () => {
+    let data = {
+      username, password
+    }
+    console.log(data)
+    let res = await axios.post("http://localhost:4000/signin", data)
+    if (res.data === "success") {
+      success();
+      setTimeout(() => {
+        navigate(`/dashboard?username=${username}`);
+      }, 2000);
+    } else {
+      incorrect();
+    }
+  }
+
+  const signup = async () => {
+    let data = {
+      username, email, password
+    }
+    let res = await axios.post("http://localhost:4000/signup", data)
+    if (res.data === "success") {
+      success();
+      setTimeout(() => {
+        navigate(`/`);
+      }, 2000);
+    } else {
+      incorrect();
+    }
+  }
   return (
     <>
-      {" "}
+      <Header />
       <BackgroundBox clicked={click}>
         <ButtonAnimate clicked={click} onClick={handleClick}></ButtonAnimate>
-
         <Form className="signin">
           <Title>Sign In</Title>
-          <Input type="email" name="email" id="emailId" placeholder="Email" />
+          <Input type="email" name="email" id="emailId" placeholder="Email" 
+          onChange={(e) => setUsername(e.target.value)}
+          />
           <Input
             type="password"
             name="password"
             id="passwordId"
             placeholder="Password"
+            onChange={(e) => setPassword(e.target.value)}
           />
           <Link href="#">Forgot Your Password?</Link>
-          <Button>Sign In</Button>
+          <Button onClick={signin}>Sign In</Button>
         </Form>
 
         <Form className="signup">
@@ -264,26 +319,29 @@ function FormComponent() {
             name="username"
             id="usernameId"
             placeholder="Username"
+            onChange={(e) => setUsername(e.target.value)}
           />
 
-          <Input type="email" name="email" id="emailId" placeholder="Email" />
+          <Input type="email" name="email" id="emailId2" placeholder="Email" 
+           onChange={(e) => setEmail(e.target.value)}/>
           <Input
             type="password"
             name="password"
-            id="passwordId"
+            id="passwordId2"
             placeholder="Password"
+            onChange={(e) => setPassword(e.target.value)}
           />
           <Link href="#" onClick={handleClick}>
             Already have an Account?
           </Link>
-          <Button>Sign Up</Button>
+          <Button onClick={signup}>Sign Up</Button>
         </Form>
 
         <Text className="text1" clicked={click}>
           <h1>Welcome!</h1>
           Don't have an account?
           <br />
-          <span className="attention">Click on Emoji</span>
+          <span className="attention">Click on the Boot</span>
           <span className="attention-icon">⤶</span>
         </Text>
 
@@ -291,7 +349,7 @@ function FormComponent() {
           <h1>Hi There!</h1>
           Already have an account?
           <br />
-          <span className="attention">Click on Emoji</span>
+          <span className="attention">Click on the Boot</span>
           <span className="attention-icon">⤷</span>
         </Text>
 
